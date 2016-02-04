@@ -57,7 +57,7 @@ public class HttpServer {
 				secondHalfHtml += line + "\n";
 			}
 
-			response.println(firstHalfHtml + secondHalfHtml);
+			response.println(firstHalfHtml + content + secondHalfHtml);
 			System.out.println("FIRST:" + firstHalfHtml);
 			System.out.println("CONTENT:" + content);
 			System.out.println("SECOND:" + secondHalfHtml);
