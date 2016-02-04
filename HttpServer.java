@@ -15,6 +15,7 @@ public class HttpServer {
 		ServerSocket ss = new ServerSocket(4711);
 
 		while (true) {
+			System.out.println("Waiting for requests...");
 			Socket s = ss.accept();
 			BufferedReader request = new BufferedReader(new InputStreamReader(s.getInputStream()));
 			String str = request.readLine();
@@ -22,6 +23,11 @@ public class HttpServer {
 			StringTokenizer tokens = new StringTokenizer(str, " ?");
 			tokens.nextToken();
 			String requestedDocument = tokens.nextToken();
+			String token = tokens.nextToken();
+			if (token.contains("guess=")) {
+				Integer guess = Integer.parseInt(token.split("guess=")[1]);
+				System.out.println("GUESS: " + guess);
+			}
 			while ((str = request.readLine()) != null && str.length() > 0) {
 				System.out.println(str);
 			}
@@ -58,9 +64,6 @@ public class HttpServer {
 			}
 
 			response.println(firstHalfHtml + content + secondHalfHtml);
-			System.out.println("FIRST:" + firstHalfHtml);
-			System.out.println("CONTENT:" + content);
-			System.out.println("SECOND:" + secondHalfHtml);
 
 			buffReader.close();
 			s.shutdownOutput();
