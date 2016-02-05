@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 public class HttpServer {
@@ -14,8 +15,12 @@ public class HttpServer {
 
 		ServerSocket ss = new ServerSocket(4711);
 		int clientCount = 0;
+		HashMap<Integer, GuessHandler> clientMap = new HashMap<Integer, GuessHandler>();
+		GuessHandler guessHandler;
 
 		while (true) {
+			Integer guess = null;
+			Integer sessionId = null;
 			System.out.println("Waiting for requests...");
 			Socket s = ss.accept();
 			BufferedReader request = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -28,64 +33,80 @@ public class HttpServer {
 
 			// A user has pressed the submit button
 			if (token.contains("guess=")) {
-				Integer guess = Integer.parseInt(token.split("guess=")[1]);
-				System.out.println("GUESS: " + guess);
+				if (token.split("guess=").length > 1) {
+					try {
+						guess = Integer.parseInt(token.split("guess=")[1]);
+					} catch (NumberFormatException e) {
+						guess = null;
+					}
+					System.out.println("GUESS: " + guess);
+				}
 			}
 
-			boolean existingUser = false;
-
+			// Parses for sessionId. If it does not exist, it will still be
+			// null.
 			while ((str = request.readLine()) != null && str.length() > 0) {
 				if (str.contains("Cookie:")) {
-					Integer sessionId = Integer.parseInt(str.split("Cookie: clientId=")[1]);
+					sessionId = Integer.parseInt(str.split("Cookie: clientId=")[1]);
 					System.out.println("SESSION ID: " + sessionId);
-					existingUser = true;
 				}
 				System.out.println(str);
 			}
-			s.shutdownInput();
 
-			if (existingUser) {
-				// Handle guess
+			// Checks if sessionId is in out hashmap. If it's not, the
+			// clientCounter is raised with one and
+			// a new sessionId is created with a new guesshandler.
+			if (clientMap.containsKey(sessionId)) {
+				guessHandler = clientMap.get(sessionId);
 			} else {
-				// Handle new client
-				PrintStream response = new PrintStream(s.getOutputStream());
-				response.println("HTTP/1.0 200 OK");
-				response.println("Server : Slask 0.1 Beta");
-				if (requestedDocument.indexOf(".html") != -1)
-					response.println("Content-Type: text/html");
-				if (requestedDocument.indexOf(".gif") != -1)
-					response.println("Content-Type: image/gif");
-
 				clientCount++;
-				response.println("Set-Cookie: clientId=" + clientCount + ";expires=Wednesday,31-Dec-2017 21:00:00 GMT");
-				response.println();
-
-				File f = new File("." + requestedDocument);
-				// Kanske ha en splitHtml()-metod eller nåt...
-				BufferedReader buffReader = new BufferedReader(new FileReader(f.getAbsolutePath()));
-				String firstHalfHtml = "";
-				String content = "";
-				String secondHalfHtml = "";
-				String line = "";
-
-				while (!((line = buffReader.readLine()).contains("/**"))) {
-					firstHalfHtml += line + "\n";
-				}
-
-				while (!((line = buffReader.readLine()).contains("**/"))) {
-					content += line + "\n";
-				}
-
-				while (((line = buffReader.readLine()) != null)) {
-					secondHalfHtml += line + "\n";
-				}
-
-				response.println(firstHalfHtml + content + secondHalfHtml);
-
-				buffReader.close();
-				s.shutdownOutput();
-				s.close();
+				sessionId = clientCount;
+				guessHandler = new GuessHandler();
+				clientMap.put(sessionId, guessHandler);
 			}
+
+			s.shutdownInput();
+			// Handle new client
+			PrintStream response = new PrintStream(s.getOutputStream());
+			response.println("HTTP/1.0 200 OK");
+			response.println("Server : Slask 0.1 Beta");
+			if (requestedDocument.indexOf(".html") != -1)
+				response.println("Content-Type: text/html");
+			if (requestedDocument.indexOf(".gif") != -1)
+				response.println("Content-Type: image/gif");
+
+			response.println("Set-Cookie: clientId=" + sessionId + ";expires=Wednesday,31-Dec-2017 21:00:00 GMT");
+			response.println();
+
+			File f = new File("." + requestedDocument);
+			// Kanske ha en splitHtml()-metod eller nåt...
+			BufferedReader buffReader = new BufferedReader(new FileReader(f.getAbsolutePath()));
+			String firstHalfHtml = "";
+
+			// The guesshandler checks the guess. A guess can either be a
+			// number, or null if it is not given. It returns our message to the
+			// user.
+			String content = guessHandler.checkGuess(guess);
+			String secondHalfHtml = "";
+			String line = "";
+
+			while (!((line = buffReader.readLine()).contains("/**"))) {
+				firstHalfHtml += line + "\n";
+			}
+
+			while (!((line = buffReader.readLine()).contains("**/"))) {
+				content += line + "\n";
+			}
+
+			while (((line = buffReader.readLine()) != null)) {
+				secondHalfHtml += line + "\n";
+			}
+
+			response.println(firstHalfHtml + content + secondHalfHtml);
+
+			buffReader.close();
+			s.shutdownOutput();
+			s.close();
 
 		}
 	}
