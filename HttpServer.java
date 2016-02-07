@@ -65,6 +65,12 @@ public class HttpServer {
 				clientMap.put(sessionId, guessHandler);
 			}
 
+			if (token.contains("newgame=")) {
+				guessHandler = new GuessHandler();
+				clientMap.remove(sessionId);
+				clientMap.put(sessionId, guessHandler);
+			}
+
 			s.shutdownInput();
 			// Handle new client
 			PrintStream response = new PrintStream(s.getOutputStream());
@@ -110,4 +116,5 @@ public class HttpServer {
 
 		}
 	}
+
 }

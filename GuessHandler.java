@@ -9,18 +9,25 @@ public class GuessHandler {
 	private Random r = new Random();
 	private boolean gameOver;
 	private int numberOfGuesses;
+	private boolean win;
 
 	// Initialize the secret number to be between 0 and 100.
 	public GuessHandler() {
 		this.secretNumber = r.nextInt(100);
 		this.gameOver = false;
 		this.numberOfGuesses = 0;
+		this.win = false;
 
 	}
 
 	public String checkGuess(Integer guess) {
 		if (gameOver) {
-			return "<p>Game over. You have already used 10 guesses.</p>";
+			if (win) {
+				return "<p>You have already won, start a new game and go for it again! Last time you got it on "
+						+ numberOfGuesses + " gueses.</p>";
+			} else {
+				return "<p>Game over. You have already used 10 guesses.</p>";
+			}
 		} else if (guess == null) {
 			return "<p>You have " + (10 - numberOfGuesses)
 					+ " guesses to guess the right number between 0 and 100.</p>";
@@ -48,8 +55,9 @@ public class GuessHandler {
 		} else if (guess == secretNumber) {
 			numberOfGuesses++;
 			gameOver = true;
-			return "<p>Wow! Your guess was right! The secret number was " + guess + ". You got in on :"
-					+ numberOfGuesses + " of guesses</p>";
+			win = true;
+			return "<p>Wow! Your guess was right! The secret number was " + guess + ". You got in on " + numberOfGuesses
+					+ " of guesses</p>";
 		}
 		return "";
 	}
