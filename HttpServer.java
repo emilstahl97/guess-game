@@ -48,7 +48,6 @@ public class HttpServer {
 			while ((str = request.readLine()) != null && str.length() > 0) {
 				if (str.contains("Cookie:")) {
 					sessionId = Integer.parseInt(str.split("Cookie: clientId=")[1]);
-					System.out.println("SESSION ID: " + sessionId);
 				}
 				System.out.println(str);
 			}
