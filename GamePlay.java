@@ -9,8 +9,14 @@ public class GamePlay {
 	private String cookie = "";
 	private String url = "http://localhost:4711/index.html";
 	private final String USER_AGENT = "Mozila/5.0";
+	private double games = 0;
+	private double totalGuesses = 0;
+	private double guesses = 0;
 
 	private void getCookie() throws Exception {
+		games = 0;
+		guesses = 0;
+		totalGuesses = 0;
 
 		HttpURLConnection con = connect("");
 
@@ -23,6 +29,8 @@ public class GamePlay {
 	}
 
 	private String guess(int guess) throws IOException {
+		guesses++;
+		totalGuesses++;
 
 		String result = "";
 
@@ -34,13 +42,10 @@ public class GamePlay {
 
 		while ((inputLine = in.readLine()) != null) {
 			if (inputLine.contains("low")) {
-				System.out.println("LOW");
 				result = "LOW";
 			} else if (inputLine.contains("high")) {
-				System.out.println("HIGH");
 				result = "HIGH";
 			} else if (inputLine.contains("Wow")) {
-				System.out.println("WOW");
 				result = "WOW";
 			}
 		}
@@ -51,7 +56,6 @@ public class GamePlay {
 
 	public void playGame(int low, int high) throws IOException {
 		int guess = (int) (low + high) / 2;
-		System.out.println("GUESS: " + guess + " HIGH " + high + " LOW: " + low);
 		String status = guess(guess);
 		switch (status) {
 		case "HIGH":
@@ -63,7 +67,7 @@ public class GamePlay {
 			playGame(low, high);
 			break;
 		case "WOW":
-			System.out.println("YAY");
+			System.out.println("GAME NR: " + (int) games + "  Finished in: " + (int) guesses + " guesses");
 		}
 	}
 
@@ -84,17 +88,30 @@ public class GamePlay {
 		GamePlay player = new GamePlay();
 		player.getCookie();
 
-		for (int c = 1; c < 100; c++) {
+		for (int c = 1; c < 101; c++) {
 			player.newGame();
-			player.playGame(1, 100);
+			player.playGame(0, 100);
 		}
-		player.playGame(0, 100);
+		player.getAverageScore();
 
 	}
 
 	private void newGame() throws IOException {
-		HttpURLConnection con = connect("?newgame=NEW+GAME");
+		games++;
+		guesses = 0;
+
+		String result = "";
+
+		HttpURLConnection con = connect("?newgame=");
 		con.setRequestProperty("Cookie", cookie);
+		con.getResponseCode();
 		con.disconnect();
+
+	}
+
+	private void getAverageScore() {
+		double average = (double) totalGuesses / games;
+		System.out.println("The avarage number of gueeses: " + average);
+
 	}
 }
