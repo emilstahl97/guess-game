@@ -89,7 +89,7 @@ public class GamePlay {
 		player.getCookie();
 
 		for (int c = 1; c < 101; c++) {
-			Thread.sleep(5000);
+			Thread.sleep(100);
 			System.out.println("STARTING NEW GUESSING GAME...");
 			player.newGame();
 			player.playGame(0, 100);
@@ -113,7 +113,7 @@ public class GamePlay {
 
 	private void getAverageScore() {
 		double average = (double) totalGuesses / games;
-		System.out.println("The avarage number of gueeses: " + average);
+		System.out.println("The average number of gueeses: " + average);
 
 	}
 }
