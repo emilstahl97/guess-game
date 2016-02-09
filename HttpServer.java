@@ -47,9 +47,9 @@ public class HttpServer {
 			// null.
 			while ((str = request.readLine()) != null && str.length() > 0) {
 				if (str.contains("Cookie:")) {
+					System.out.println(str);
 					sessionId = Integer.parseInt(str.split("Cookie: clientId=")[1]);
 				}
-				System.out.println(str);
 			}
 
 			// Checks if sessionId is in out hashmap. If it's not, the

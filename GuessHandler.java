@@ -50,7 +50,7 @@ public class GuessHandler {
 		} else if (guess > secretNumber) {
 			numberOfGuesses++;
 			if (gameOver) {
-				return "<p>Too low! The game is now over. The secret number was " + secretNumber + ".</p>";
+				return "<p>Too high! The game is now over. The secret number was " + secretNumber + ".</p>";
 			} else {
 				return "<p>Too high! Try again. You now have " + (10 - numberOfGuesses) + " guesses left.</p>";
 			}

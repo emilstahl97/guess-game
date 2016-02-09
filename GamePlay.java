@@ -1,67 +1,100 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class GamePlay {
 
+	private String cookie = "";
+	private String url = "http://localhost:4711/index.html";
 	private final String USER_AGENT = "Mozila/5.0";
 
-	// HTTP GET request
-	private void sendGet() throws Exception {
+	private void getCookie() throws Exception {
 
-		String url = "http://localhost:4711/index.html";
+		HttpURLConnection con = connect("");
 
-		URL obj = new URL(url);
-		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		// Grab Set-Cookie headers:
+		String cookie = con.getHeaderFields().get("Set-Cookie").get(0);
+		this.cookie = cookie.split(";")[0];
+		System.out.println("COOKIE: " + cookie);
+		con.disconnect();
 
-		// optional default is GET
-		con.setRequestMethod("GET");
-		String myCookie = "userId=12312";
-		// add request header
-		con.setRequestProperty("User-Agent", USER_AGENT);
-		con.addRequestProperty("Cookie", myCookie);
-		// con.setRequestProperty("Cookie", "cliendId=" + 5);
-		// int cookie = getCookie(con.getHeaderField("Set-Cookie"));
-		int responseCode = con.getResponseCode();
-		System.out.println("\nSending 'GET' request to URL : " + url);
-		System.out.println("Response Code : " + responseCode);
+	}
 
+	private String guess(int guess) throws IOException {
+
+		String result = "";
+
+		HttpURLConnection con = connect("?guess=" + guess);
+		con.setRequestProperty("Cookie", cookie);
 		BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 		String inputLine;
 		StringBuffer response = new StringBuffer();
 
 		while ((inputLine = in.readLine()) != null) {
-			System.out.println(inputLine.toString());
+			if (inputLine.contains("low")) {
+				System.out.println("LOW");
+				result = "LOW";
+			} else if (inputLine.contains("high")) {
+				System.out.println("HIGH");
+				result = "HIGH";
+			} else if (inputLine.contains("Wow")) {
+				System.out.println("WOW");
+				result = "WOW";
+			}
 		}
 		in.close();
-		// System.out.println(cookie);
-
+		con.disconnect();
+		return result;
 	}
 
-	public Integer getCookie(String cookie) {
-		String temp = "";
-		Integer intCookie = null;
-		int index = cookie.indexOf("=") + 1;
-		while (!cookie.substring(index, index + 1).equals(";")) {
-			temp += cookie.substring(index, index + 1);
-			index++;
+	public void playGame(int low, int high) throws IOException {
+		int guess = (int) (low + high) / 2;
+		System.out.println("GUESS: " + guess + " HIGH " + high + " LOW: " + low);
+		String status = guess(guess);
+		switch (status) {
+		case "HIGH":
+			high = guess;
+			playGame(low, high);
+			break;
+		case "LOW":
+			low = guess + 1;
+			playGame(low, high);
+			break;
+		case "WOW":
+			System.out.println("YAY");
 		}
-		try {
-			intCookie = Integer.parseInt(temp);
-		} catch (NumberFormatException e) {
-			intCookie = null;
-		}
-		return intCookie;
+	}
 
+	private HttpURLConnection connect(String request) throws IOException {
+
+		URL obj = new URL(url + request);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+		// optional default is GET
+		con.setRequestMethod("GET");
+		// add request header
+		con.setRequestProperty("User-Agent", USER_AGENT);
+		return con;
 	}
 
 	public static void main(String[] args) throws Exception {
 
-		GamePlay http = new GamePlay();
+		GamePlay player = new GamePlay();
+		player.getCookie();
 
-		System.out.println("Testing 1 - Send Http GET request");
-		http.sendGet();
+		for (int c = 1; c < 100; c++) {
+			player.newGame();
+			player.playGame(1, 100);
+		}
+		player.playGame(0, 100);
 
+	}
+
+	private void newGame() throws IOException {
+		HttpURLConnection con = connect("?newgame=NEW+GAME");
+		con.setRequestProperty("Cookie", cookie);
+		con.disconnect();
 	}
 }
