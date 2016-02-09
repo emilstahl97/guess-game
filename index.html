@@ -16,6 +16,32 @@
   <!-- Latest compiled and minified CSS -->
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
+   <style type="text/css">
+      body {
+        font-family: "Lato", sans-serif;
+        font-weight: 100;
+        font-size: 14px;
+        padding-top: 120px;
+      }
+
+    h1 {
+      font-family: "Lato", sans-serif;
+      font-weight: 100;
+      font-size: 30px;
+    }
+
+    h2 {
+      font-family: "Lato", sans-serif;
+      color: #323232;
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    } 
+
+
+   </style>
+
   <title>Guess Game</title>
 
 </head>
@@ -23,25 +49,29 @@
 
 
     <div class="container">
-      <h1>Awesome Guessing Game</h1>
-      <p>Guess a number between 0 to 100!</p>
-      <form role="form" name="guessform">
-        <div class="form-group">
-          <label>Your guess:</label>
-          <input type=text class="form-control" name=guess> <br>
-          <input type=submit class="btn btn-primary" value="Guess">
-        </div
-      </form>
+      <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+          <h1>Awesome Guessing Game</h1>
+          <p>Guess a number between 0 to 100!</p>
+          <form role="form" name="guessform">
+            <div class="form-group">
+              <label>Your guess:</label>
+              <input type=text class="form-control" name=guess> <br>
+              <input type=submit class="btn btn-primary" value="Guess">
+            </div
+          </form>
 /**
 
-**/ 
+**/
 
-<br><br>
-      <form>
-          <label>Start a new game: </label><br>
-          <input type=submit name=newgame class="btn btn-primary" value="New Game">
-      </form>
-<br>     
+          <br><br>
+          <form>
+            <label>Start a new game: </label><br>
+            <input type=submit name=newgame class="btn btn-primary" value="New Game">
+          </form>
+          <br>     
+        </div>
+      </div>
     </div>
 
 
