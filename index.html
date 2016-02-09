@@ -2,52 +2,51 @@
 <html>
 <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<!-- Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Lato:300,100,400' rel='stylesheet' type='text/css'>
+  <!-- Fonts -->
+  <link href='https://fonts.googleapis.com/css?family=Lato:300,100,400' rel='stylesheet' type='text/css'>
 
+  <link rel="shortcut icon" href="http://static1.1.sqspcdn.com/static/f/688737/8949094/1286990648317/favicon.png?token=fzDCOjnVbx9KA5%2Bohz1vHWxRyqk%3D">
 
-    <link rel="shortcut icon" href="http://static1.1.sqspcdn.com/static/f/688737/8949094/1286990648317/favicon.png?token=fzDCOjnVbx9KA5%2Bohz1vHWxRyqk%3D">
-    
+  <!-- Bootstrap -->
+  <!-- Latest compiled and minified CSS -->
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
-	<!-- Bootstrap -->
-    <!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-    <title>Guess Game</title>
+  <title>Guess Game</title>
 
 </head>
 <body>
 
 
     <div class="container">
-      <h2>Awesome Guessing Game</h2>
+      <h1>Awesome Guessing Game</h1>
       <p>Guess a number between 0 to 100!</p>
       <form role="form" name="guessform">
         <div class="form-group">
           <label>Your guess:</label>
-          <input type=text class="form-control" name=guess>
-          <input type=submit value="Guess">
-        </div>
-
-
+          <input type=text class="form-control" name=guess> <br>
+          <input type=submit class="btn btn-primary" value="Guess">
+        </div
       </form>
-
 /**
 
-**/      
+**/ 
+
+<br><br>
+      <form>
+          <label>Start a new game: </label><br>
+          <input type=submit name=newgame class="btn btn-primary" value="New Game">
+      </form>
+<br>     
     </div>
 
 
     <!-- Latest compiled and minified JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-      <form>
-          <label>Or start a new game</label>
-          <input type=submit name=newgame value="New Game">
-      </form>
+
 </body>
 </html>

@@ -57,16 +57,14 @@ public class HttpServer {
 			// a new sessionId is created with a new guesshandler.
 			if (clientMap.containsKey(sessionId)) {
 				guessHandler = clientMap.get(sessionId);
+				if (token.contains("newgame=")) {
+					guessHandler.startNewGame();
+				}
+
 			} else {
 				clientCount++;
 				sessionId = clientCount;
 				guessHandler = new GuessHandler();
-				clientMap.put(sessionId, guessHandler);
-			}
-
-			if (token.contains("newgame=")) {
-				guessHandler = new GuessHandler();
-				clientMap.remove(sessionId);
 				clientMap.put(sessionId, guessHandler);
 			}
 
@@ -107,6 +105,7 @@ public class HttpServer {
 				secondHalfHtml += line + "\n";
 			}
 
+			content += guessHandler.getOldGames();
 			response.println(firstHalfHtml + content + secondHalfHtml);
 
 			buffReader.close();
@@ -114,6 +113,10 @@ public class HttpServer {
 			s.close();
 
 		}
+	}
+
+	private String createHtmlOutputString() {
+		return "";
 	}
 
 }
