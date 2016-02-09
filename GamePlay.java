@@ -89,6 +89,8 @@ public class GamePlay {
 		player.getCookie();
 
 		for (int c = 1; c < 101; c++) {
+			Thread.sleep(5000);
+			System.out.println("STARTING NEW GUESSING GAME...");
 			player.newGame();
 			player.playGame(0, 100);
 		}
