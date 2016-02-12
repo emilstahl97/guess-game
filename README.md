@@ -13,4 +13,13 @@ This is a guessing game written in java.
    Host: w3schools.com
    guess=67
    ```
+* What is REST?
+  * REST (REpresentational State Transfer) is a software architectural style and a convention for handling resources. It typically uses HTTP. Every resource should be uniquely addressable and follow a standard. For example, if you have an `articles` resource:
+  ```
+   /Article                         GET       Gets a list with all articles
+   /Article                         POST      Creates a new article
+   /Article/{Article}               GET       Returns a specific article
+   /Article/{Article}               PUT       Updates an article
+   /Article/{Article}               DELETE    Removes an article
+  ```
 
