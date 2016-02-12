@@ -23,3 +23,5 @@ This is a guessing game written in java.
    /Article/{Article}               DELETE    Removes an article
   ```
 
+* What are the other HTTP request methods that are used in REST?
+  * GET, POST, PUT and DELETE.
