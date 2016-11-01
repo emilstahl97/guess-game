@@ -1,5 +1,5 @@
-# guess-game
-This is a guessing game written in java.
+# Guess game
+This is a (very simple) guessing game written in Java. The point was to understand the HTTP protocol better.
 
 # Questions
 * What is the difference between GET and POST?
