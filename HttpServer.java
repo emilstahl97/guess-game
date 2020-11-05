@@ -78,11 +78,11 @@ public class HttpServer {
 			if (requestedDocument.indexOf(".gif") != -1)
 				response.println("Content-Type: image/gif");
 
-			response.println("Set-Cookie: clientId=" + sessionId + ";expires=Wednesday,31-Dec-2017 21:00:00 GMT");
+			response.println("Set-Cookie: clientId=" + sessionId);
 			response.println();
 
 			File f = new File("." + requestedDocument);
-			// Kanske ha en splitHtml()-metod eller nåt...
+
 			BufferedReader buffReader = new BufferedReader(new FileReader(f.getAbsolutePath()));
 			String firstHalfHtml = "";
 
